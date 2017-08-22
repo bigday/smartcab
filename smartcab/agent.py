@@ -126,14 +126,24 @@ class LearningAgent(Agent):
         # When not learning, choose a random action
         # When learning, choose a random action with 'epsilon' probability
         #   Otherwise, choose an action with the highest Q-value for the current state
+
         if not self.learning:
             return random.choice(self.valid_actions)
 
-        if random.uniform(0, 1) < self.epsilon:
+        # epsilon greedy
+        # choose action randomly with probability epsilon
+        # and choose best action according Q-table with probability 1-epsilon
+        # make sure the probability of visiting every state > 0
+        # epsilon should decrease along time
+
+        if random.random() < self.epsilon and self.epsilon > 0.001:
             action = random.choice(self.valid_actions)
         else:
             maxQ = self.get_maxQ(state)
             actionlist = [key for key, q in self.Q[state].items() if q == maxQ]
+            # random choose the biggest Q value actions
+            # if not, the agent will only update one certain action which will make
+            # the agent turn in circles
             action = random.choice(actionlist)
         return action
 
