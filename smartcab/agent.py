@@ -106,7 +106,7 @@ class LearningAgent(Agent):
         # When learning, check if the 'state' is not in the Q-table
         # If it is not, create a new dictionary for that state
         #   Then, for each action available, set the initial Q-value to 0.0
-        if self.learning and state not in self.Q:
+        if self.learning:
             self.Q.setdefault(state, {a: 0 for a in self.valid_actions})
 
         return
@@ -136,7 +136,7 @@ class LearningAgent(Agent):
             # make sure the probability of visiting every state > 0
             # epsilon should decrease along time
 
-            if random.random() < self.epsilon and self.epsilon > 0.001:
+            if random.random() < self.epsilon:
                 action = random.choice(self.valid_actions)
             else:
                 maxQ = self.get_maxQ(state)
